@@ -60,6 +60,10 @@ class get_ticket:
               train_go_date, condition, choose_index_train, train_start_time, train_code_list, self.reflex_table)
         self.open_browsers()
     def open_browsers(self):
+        self.browsers_dir_copy_list=[]
+        self.copy_browser_dir=os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)), 
+                    "driver", "browser")
         self.count=0
         self.abs_dir = os.path.dirname(os.path.abspath(__file__))
         self.inborn_driver_list=["firefox", "waterfox", "firefox-developer", "firefox-nightly", "msedge", "msedge-dev", "msedge-beta",
@@ -74,10 +78,14 @@ class get_ticket:
         self.choosed_driver_name=None
         self.browser_dir=None
         for inborn_driver in self.inborn_driver_list:
+            self.count_compare_time=0
             for host_browser in self.browsers_list:
                 if inborn_driver==host_browser["browser_type"]:
                     self.choosed_driver=inborn_driver
                     self.browser_dir=host_browser["path"]
+                    self.browsers_dir_copy_list.append(self.browser_dir)
+                    if os.path.exists(self.copy_browser_dir)==True:
+                        self.browser_dir=os.path.join(self.copy_browser_dir, os.path.basename(self.browser_dir))
                     self.browsers_dir_list.append(self.browser_dir)
                     if (self.system_type=="win32" or self.system_type=="cygwin" or self.system_type=="win64"
                         or self.system_type=="windows" or self.system_type=="Windows"):
@@ -99,9 +107,11 @@ class get_ticket:
                             self.choosed_driver_type_list.append(self.choosed_driver)
                             self.choosed_browsers_dir_list.append(self.browser_dir)
                         else:
-                            tkinter.messagebox.showerror(
-                                title="不兼容",
-                                message="本项目未自带本机中浏览器的驱动程序。请阅读readme文件，并指定驱动和下载地址。如问题仍未解决，请发布issue")
+                            self.count_compare_time+=1
+                            if self.count_compare_time==len(self.browsers_list):
+                                tkinter.messagebox.showerror(
+                                    title="不兼容",
+                                    message="本项目不支持操作系统中现有的浏览器")
                     elif self.system_type=="linux" or self.system_type=="Linux":
                         if self.choosed_driver=="firefox" or self.choosed_driver=="waterfox":
                             self.choosed_driver_name="geckodriver"
@@ -120,9 +130,11 @@ class get_ticket:
                             self.choosed_driver_type_list.append(self.choosed_driver)
                             self.choosed_browsers_dir_list.append(self.browser_dir)
                         else:
-                            tkinter.messagebox.showerror(
-                                title="不兼容",
-                                message="本项目未自带本机中浏览器的驱动程序。请阅读readme文件，并指定驱动和下载地址。如问题仍未解决，请发布issue")
+                            self.count_compare_time+=1
+                            if self.count_compare_time==len(self.browsers_list):
+                                tkinter.messagebox.showerror(
+                                    title="不兼容",
+                                    message="本项目不支持操作系统中现有的浏览器")
                     elif self.system_type=="darwin":
                         if (self.choosed_driver_name=="firefox" or self.choosed_driver_name=="firefox-developer" or
                             self.choosed_driver_name=="firefox-nightly"):
@@ -144,9 +156,11 @@ class get_ticket:
                             self.choosed_driver_type_list.append(self.choosed_driver)
                             self.choosed_browsers_dir_list.append(self.browser_dir)
                         else:
-                            tkinter.messagebox.showerror(
-                                title="不兼容",
-                                message="本项目未自带本机中浏览器的驱动程序。请阅读readme文件，并指定驱动和下载地址。如问题仍未解决，请发布issue")
+                            self.count_compare_time+=1
+                            if self.count_compare_time==len(self.browsers_list):
+                                tkinter.messagebox.showerror(
+                                    title="不兼容",
+                                    message="本项目不支持操作系统中现有的浏览器")
                     else:
                         tkinter.messagebox.showerror(
                             title="不兼容",
@@ -200,22 +214,41 @@ class get_ticket:
                         self.driver.add_cookie(cookies)
                     self.web_get_ticket()
                 else:
-                    tkinter.messagebox.showerror(title="Error", message="Error")
+                    tkinter.messagebox.showerror(title="调用错误", message="未找到可用的浏览器驱动")
             except:
                 continue
             break
         if self.count==len(self.choosed_driver_name_list):
+            self.result_record_file_name="data_socket_error_deal_result.log"
+            self.record_result_file_dir=os.path.join(
+                self.temp_dir, self.result_record_file_name)
+            self.deal_result=None
             tkinter.messagebox.showerror(title="Error", message="无法使用任何浏览器，请确保您的系统浏览器或浏览器驱动已升级到最新。")
-            deal_browser_driver.check_browsers_drivers_error(
-                self.browsers_dir_list, self.choosed_driver_name_list, self.computer_width, self.computer_high)
+            deal_func_init=deal_browser_driver.check_browsers_drivers_error(
+                self.browsers_dir_copy_list, self.choosed_driver_name_list, 
+                self.computer_width, self.computer_high, self.temp_dir)
+            deal_func_init.show_info_window()
+            while True:
+                if os.path.exists(self.record_result_file_dir)==True:
+                    break
+            if os.path.exists(self.record_result_file_dir)==True:
+                with open(self.record_result_file_dir, "r", encoding="utf-8") as deal_result_read:
+                    self.deal_result=bool(deal_result_read.read())
+                os.remove(self.record_result_file_dir)
+                if self.deal_result==True:
+                    self.open_browsers()
+                else:
+                    tkinter.messagebox.showerror(title="未能解决", message="无法解决问题, 请阅读readme或发布issue")
+            else:
+                pass
         else:
             pass
     def get_train_ticket_button(self):
-        for ticket_range_index in range(self.total_ticket_num):
-            self.train_ticket_label_xpath=(
-                r"/html/body/div[2]/div[7]/div[13]/table/tbody/tr[{}]".formate(ticket_range_index*2))
-            self.ticket_label_element=self.driver.find_element(By.XPATH, self.train_ticket_label_xpath)
-            self.ticket_label_html=self.ticket_label_element.get_attribute("outerHTML")
+        # for ticket_range_index in range(self.total_ticket_num):
+        #     self.train_ticket_label_xpath=(
+        #         r"/html/body/div[2]/div[7]/div[13]/table/tbody/tr[{}]".formate(ticket_range_index*2))
+        #     self.ticket_label_element=self.driver.find_element(By.XPATH, self.train_ticket_label_xpath)
+        #     self.ticket_label_html=self.ticket_label_element.get_attribute("outerHTML")
         self.select_info_list=None
         self.reflex_table_keys=list(self.reflex_table.keys())
         self.reflex_table_values=list(self.reflex_table.values())
