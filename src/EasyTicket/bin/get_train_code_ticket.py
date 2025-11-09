@@ -395,7 +395,8 @@ class get_ticket:
             pass
         timeout_thread=threading.Thread(target=self.time_out_check, daemon=True)
         timeout_thread.start()
-        while self.is_statement_exit!=True or self.is_over_time==False:
+        while self.is_statement_exit!=True and self.is_over_time==False:
+            time.slee(0.5)
             try:
                 self.sign_in_statement = self.driver.find_element(By.XPATH, self.sign_in_statement_xpath)
                 if self.sign_in_statement.is_displayed()==True:
@@ -416,8 +417,9 @@ class get_ticket:
                         EC.element_to_be_clickable((By.XPATH, self.before_valid_code_xpath)))
                     self.before_valid_code_button.click()
                     self.sign_in()
-                if (self.valid_code_statement_text == "请输入正确验证码" or
-                    self.valid_code_statement_text=="很抱歉，您输入的短信验证码有误。"):
+                if (self.valid_code_statement_text == "请输入正确验证码" or 
+                    self.valid_code_statement_text=="很抱歉，您输入的短信验证码有误。" or 
+                    self.valid_code_statement_text=="请输入验证码"):
                     tkinter.messagebox.showerror(title="登录错误", message="短信验证码有误。")
                     os.remove(self.valid_code_socket_file)
                     self.before_valid_code_button = WebDriverWait(self.driver, timeout=20).until(
