@@ -18,6 +18,7 @@ class get_ticket:
     def __init__(self, train_code, choose_start_station, choose_end_station, period_start_station, period_end_station,
                  train_go_date, condition, choose_index_train, train_start_time, train_code_list, reflex_table, file_dir,
                  computer_screen_height, computer_screen_width, total_ticket_num):
+        self.button_xpath=None
         self.is_exist=False
         self.is_over_time=False
         self.is_valid_code_pass=None
@@ -244,27 +245,67 @@ class get_ticket:
         else:
             pass
     def get_train_ticket_button(self):
-        # for ticket_range_index in range(self.total_ticket_num):
-        #     self.train_ticket_label_xpath=(
-        #         r"/html/body/div[2]/div[7]/div[13]/table/tbody/tr[{}]".formate(ticket_range_index*2))
-        #     self.ticket_label_element=self.driver.find_element(By.XPATH, self.train_ticket_label_xpath)
-        #     self.ticket_label_html=self.ticket_label_element.get_attribute("outerHTML")
+        self.is_find_button_success=None
         self.select_info_list=None
         self.reflex_table_keys=list(self.reflex_table.keys())
         self.reflex_table_values=list(self.reflex_table.values())
         if self.condition == "1":
-            self.index = self.reflex_table_values.index(self.train_code-1)
-            self.range_value = self.reflex_table_keys[self.index]+1
-            for index in range(self.range_value):
-                self.train_code_index += 2
+            try:
+                for ticket_range_index in range(1, self.total_ticket_num+1):
+                    if self.is_find_button_success==True:
+                        break
+                    self.train_ticket_label_xpath=(
+                        r"/html/body/div[2]/div[7]/div[13]/table/tbody/tr[{}]".format(ticket_range_index*2))
+                    self.ticket_label_element=WebDriverWait(self.driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, self.train_ticket_label_xpath)))
+                    self.ticket_label_html=self.ticket_label_element.get_attribute("outerHTML")                
+                    for element_attribute in self.ticket_label_html.split(" "):
+                        if element_attribute=='datatran="{}"'.format(self.train_code_list[self.train_code-1]):
+                            self.train_code_index=-1
+                            self.range_value=ticket_range_index
+                            for index in range(self.range_value):
+                                self.train_code_index+=2
+                            self.button_xpath = (
+                                "/html/body/div[2]/div[7]/div[13]/table/tbody/tr[{}]/td[13]/a".format(self.train_code_index))
+                            self.ticket_button_element=WebDriverWait(self.driver, 10).until(
+                                EC.element_to_be_clickable((By.XPATH, self.button_xpath)))
+                            self.ticket_button_html=self.ticket_button_element.get_attribute("outerHTML")
+                            ticket_attribute_list=self.ticket_button_html.split(" ") # 3 4
+                            ticket_button_js_list=ticket_attribute_list[len(ticket_attribute_list)-1].split(",")
+                            if ticket_attribute_list[3]==self.choose_start_station and ticket_attribute_list[4]==self.choose_end_station:
+                                self.is_find_button_success=True
+                                break
+                            print(self.ticket_button_element)
+            except:
+                self.index = self.reflex_table_values.index(self.train_code-1)
+                self.range_value = self.reflex_table_keys[self.index]+1
+                for index in range(self.range_value):
+                    self.train_code_index += 2
             self.select_info_list=[self.train_code_list[self.train_code-1], self.train_start_time,
                                    self.period_start_station, self.period_end_station]
         elif self.condition == "2":
-            self.ticket_index=int(len(self.choose_index_train)/2)
-            self.index = self.reflex_table_values.index(self.choose_index_train[self.ticket_index])
-            self.range_value = self.reflex_table_keys[self.index]+1
-            for index in range(self.range_value):
-                self.train_code_index += 2
+            self.train_index_list=[]
+            try:
+                for ticket_range_index in range(1, self.total_ticket_num+1):
+                    self.train_ticket_label_xpath=(
+                        r"/html/body/div[2]/div[7]/div[13]/table/tbody/tr[{}]".format(ticket_range_index*2))
+                    self.ticket_label_element=WebDriverWait(self.driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, self.train_ticket_label_xpath)))
+                    self.ticket_label_html=self.ticket_label_element.get_attribute("outerHTML")
+                    for element_attribute in self.ticket_label_html.split(" "):
+                        if element_attribute=='datatran="{}"'.format(self.train_code):
+                            self.train_code_index=-1
+                            self.range_value=ticket_range_index
+                            for index in range(self.range_value):
+                                self.train_code_index+=2
+                            self.train_index_list.append(self.train_code_index)
+                self.train_code_index=self.train_index_list[int(len(self.train_index_list)/2)]
+            except:
+                self.ticket_index=int(len(self.choose_index_train)/2)
+                self.index = self.reflex_table_values.index(self.choose_index_train[self.ticket_index])
+                self.range_value = self.reflex_table_keys[self.index]+1
+                for index in range(self.range_value):
+                    self.train_code_index += 2
             self.select_info_list=[self.train_code, self.train_start_time[self.ticket_index],
                                    self.period_start_station[self.ticket_index], self.period_end_station[self.ticket_index]]
         print(self.train_code_index)
@@ -306,6 +347,10 @@ class get_ticket:
         self.passenger_name_input_xpath=r"/html/body/div[1]/div[11]/div[3]/div[1]/div/input[1]"
         self.sign_sure_button_xapth=r"/html/body/div[6]/div[2]/div[2]/div[2]/a"
         self.next_page_xpath=r"/html/body/div[1]/div[11]/div[1]/div[1]"
+        self.train_ticket_list_xpath=r"/html/body/div[2]/div[7]/div[13]"
+        self.choose_valid_way_window_xpath=r"/html/body/div[2]/div[35]"
+        self.sign_in_slide_mask_xpath=r"/html/body/div[2]/div[31]"
+        self.sign_in_window_xpath=r"/html/body/div[2]/div[33]"
         self.sign_in_socket_file=os.path.join(self.temp_dir, "data_socket_user_sign_in_info.log")
         self.valid_code_socket_file=os.path.join(self.temp_dir, "data_socket_user_valid_code_info.log")
         self.valid_code_resend_file=os.path.join(self.temp_dir, "data_socket_user_resend_valid_code_info.log")
@@ -403,6 +448,9 @@ class get_ticket:
                     self.is_statement_exit = True
                 self.next_page_statement=self.driver.find_element(By.XPATH, self.next_page_xpath)
                 if self.next_page_statement.is_displayed()==True:
+                    self.is_statement_exit=True
+                self.is_sign_in_success=self.driver.find_element(By.XPATH, self.sign_in_slide_mask_xpath)
+                if self.is_sign_in_success.is_displayed()==False:
                     self.is_statement_exit=True
             except:
                 continue
