@@ -270,12 +270,12 @@ class get_ticket:
                             self.ticket_button_element=WebDriverWait(self.driver, 10).until(
                                 EC.element_to_be_clickable((By.XPATH, self.button_xpath)))
                             self.ticket_button_html=self.ticket_button_element.get_attribute("outerHTML")
-                            ticket_attribute_list=self.ticket_button_html.split(" ") # 3 4
-                            ticket_button_js_list=ticket_attribute_list[len(ticket_attribute_list)-1].split(",")
-                            if ticket_attribute_list[3]==self.choose_start_station and ticket_attribute_list[4]==self.choose_end_station:
+                            ticket_attribute_list=self.ticket_button_html.split(" ")
+                            ticket_button_js_list=ticket_attribute_list[3].split(",")
+                            if (ticket_button_js_list[3]=="'{}'".format(self.period_start_station) and 
+                                ticket_button_js_list[4]=="'{}'".format(self.period_end_station)):
                                 self.is_find_button_success=True
                                 break
-                            print(self.ticket_button_element)
             except:
                 self.index = self.reflex_table_values.index(self.train_code-1)
                 self.range_value = self.reflex_table_keys[self.index]+1
@@ -593,10 +593,6 @@ class get_ticket:
         self.sign_in()
         self.ensure_ticket_info()
 
-# /html/body/div[1]/div[2]/div[2]/div[2]/div[12]/p/span/a
-# /html/body/div[1]/div[2]/div[2]/div[2]/div[2]/div/div[3]/table/tbody/tr[3]/td[1]/label/input
-# /html/body/div[1]/div[2]/div[2]/div[2]/div[2]/div/div[4]/div[2]/div[2]/select
-# /html/body/div[1]/div[3]/div[2]/a[2]
 
 
 
