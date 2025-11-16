@@ -1,5 +1,5 @@
 # EasyTicket
-[![build](https://img.shields.io/badge/build-passing-green)](https://github.com/F18-Maverick/EasyTicket/actions)  [![lint](https://img.shields.io/badge/lint-passing-green)](https://github.com/F18-Maverick/EasyTicket/actions/workflows/pylint.yml)  [![Pypacket](https://img.shields.io/badge/PyPacket-passing-green)](https://github.com/F18-Maverick/EasyTicket/actions/workflows/publish.yml)  [![docs](https://img.shields.io/badge/docs-writing-blue)](https://github.com/F18-Maverick/EasyTicket/docs)  [![pypi](https://img.shields.io/badge/PyPI-testing_v0.0.2-red)](https://test.pypi.org/project/EasyTicket/0.0.1.post3/)  [![version](https://img.shields.io/badge/Release-v0.0.1-green)](https://github.com/F18-Maverick/EasyTicket/releases/tag/v0.0.1-alpha)  [![PythonVersion](https://img.shields.io/badge/Python-3.9_|_3.10_|_3.11_|_3.12_|_3.13_|_3.14-blue)](https://github.com/F18-Maverick/EasyTicket)  [![lisence](https://img.shields.io/badge/Lisnece-GNU_GPL_v3.0_or_Later-red)](https://github.com/F18-Maverick/EasyTicket/blob/main/LICENSE)  [![Sponsor](https://img.shields.io/badge/%E2%9D%A4-Sponsor%20me-%23c96198?style=flat&logo=GitHub)](https://github.com/sponsors/F18-Maverick)  
+[![build](https://img.shields.io/badge/build-passing-green)](https://github.com/F18-Maverick/EasyTicket/actions)  [![lint](https://img.shields.io/badge/lint-passing-green)](https://github.com/F18-Maverick/EasyTicket/actions/workflows/pylint.yml)  [![Pypacket](https://img.shields.io/badge/PyPacket-passing-green)](https://github.com/F18-Maverick/EasyTicket/actions/workflows/publish.yml)  [![docs](https://img.shields.io/badge/docs-passing-blue)](https://github.com/F18-Maverick/EasyTicket/docs)  [![pypi](https://img.shields.io/badge/PyPI-v1.0.0-red)](https://test.pypi.org/project/EasyTicket/0.0.1.post3/)  [![version](https://img.shields.io/badge/Release-v1.0.0-green)](https://github.com/F18-Maverick/EasyTicket/releases/tag/v0.0.1-alpha)  [![PythonVersion](https://img.shields.io/badge/Python-3.9_|_3.10_|_3.11_|_3.12_|_3.13_|_3.14-blue)](https://github.com/F18-Maverick/EasyTicket)  [![lisence](https://img.shields.io/badge/Lisnece-GNU_GPL_v3.0_or_Later-red)](https://github.com/F18-Maverick/EasyTicket/blob/main/LICENSE)  [![Sponsor](https://img.shields.io/badge/%E2%9D%A4-Sponsor%20me-%23c96198?style=flat&logo=GitHub)](https://github.com/sponsors/F18-Maverick)  
 
 <div align=center>
 <img src="https://github.com/F18-Maverick/EasyTicket/blob/main/src/EasyTicket/ticket_12306_prog_addition/download_photo.ico" width="120" height="120">
@@ -9,8 +9,8 @@
 用爬虫和selenium等自动化技术调用系统浏览器实现。
 
 ## 支持列表
-* 操作系统：Windows | Linux | MacOS
-* 浏览器：MicroSoft Edge (系列) | Google Chrome (系列) | FireFox (系列)  
+* 操作系统：Windows | Linux | MacOS (推荐使用Windows和Linux)
+* 浏览器：MicroSoft Edge (系列) | Google Chrome (系列) | FireFox (系列)  (推荐使用Firefox或edge)  
 (* 注：在使用该项目前请确保你的系统浏览器已经升级到最新，
 但是如果你不愿意升级你的浏览器，可以选择更改项目中的驱动版本，
 并确保和你的系统浏览器版本相匹即可。)
@@ -22,7 +22,7 @@
 ### 1, 通过pip安装：
 &emsp; (* 注：当前pip仍然为测试版)
 ```sh
-pip install -i https://test.pypi.org/simple/ EasyTicket==0.0.2
+pip install EasyTicket
 ```
 &emsp; 等待安装完成后，python可以通过直接输入项目名称启动
 ```sh
