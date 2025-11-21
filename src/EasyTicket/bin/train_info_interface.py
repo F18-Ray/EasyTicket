@@ -132,11 +132,21 @@ class train_ticket_choose_UI:
         print(self.train_code_list)
         self.ticket_choose_train_thread = threading.Thread(
             target=get_ticket,
-            args=(self.text_train_code, self.choosed_start_station, self.choosed_end_station,
-                  self.period_start_name, self.period_end_name, self.train_go_date, self.condition,
-                  self.choose_train_ticket, self.period_start_time, self.train_code_list,
-                  self.reflex_table, self.current_dir_this_file, self.main_window_height, self.main_window_width, 
-                  len(self.train_info_dict)),
+            kwargs={"train_code":self.text_train_code, 
+                    "choose_start_station":self.choosed_start_station, 
+                    "choose_end_station":self.choosed_end_station,
+                    "period_start_station":self.period_start_name, 
+                    "period_end_station":self.period_end_name, 
+                    "train_go_date":self.train_go_date, 
+                    "condition":self.condition,
+                    "choose_index_train":self.choose_train_ticket, 
+                    "train_start_time":self.period_start_time, 
+                    "train_code_list":self.train_code_list,
+                    "reflex_table":self.reflex_table, 
+                    "file_dir":self.current_dir_this_file, 
+                    "computer_screen_height":self.main_window_height, 
+                    "computer_screen_width":self.main_window_width, 
+                    "total_ticket_num":len(self.train_info_dict)},
             name="thread10", daemon=True)
         self.ticket_choose_train_thread_start = self.ticket_choose_train_thread.start()
     def get_enter_contant(self):

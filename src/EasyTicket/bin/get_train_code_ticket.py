@@ -15,9 +15,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 class get_ticket:
-    def __init__(self, train_code, choose_start_station, choose_end_station, period_start_station, period_end_station,
-                 train_go_date, condition, choose_index_train, train_start_time, train_code_list, reflex_table, file_dir,
-                 computer_screen_height, computer_screen_width, total_ticket_num):
+    def __init__(self, **kwargs):
+        self.kwargs=kwargs
+        self.inital_vars(kwargs)
+        self.open_browsers()
+    def inital_vars(self, kwargs):
         self.button_xpath=None
         self.is_exist=False
         self.is_over_time=False
@@ -29,27 +31,27 @@ class get_ticket:
         self.before_valid_code_xpath=None
         self.sign_in_statement_xpath=None
         self.is_statement_exit=None
-        self.file_dir_name = file_dir
+        self.file_dir_name = kwargs["file_dir"]
         self.temp_dir = os.path.join(self.file_dir_name, 'temp')
         self.init_url = "https://kyfw.12306.cn/otn/leftTicket/init"
         self.is_already_error=False
         self.button_xpath = None
         self.driver=None
         self.train_code_index = -1
-        self.train_go_date = train_go_date
-        self.train_code = train_code
-        self.choose_start_station = choose_start_station
-        self.choose_end_station = choose_end_station
-        self.period_start_station=period_start_station
-        self.period_end_station=period_end_station
-        self.condition = condition
-        self.choose_index_train = choose_index_train
-        self.train_start_time=train_start_time
-        self.train_code_list=train_code_list
-        self.reflex_table=reflex_table
-        self.computer_width=computer_screen_width
-        self.computer_high=computer_screen_height
-        self.total_ticket_num=total_ticket_num
+        self.train_go_date = kwargs["train_go_date"]
+        self.train_code = kwargs["train_code"]
+        self.choose_start_station = kwargs["choose_start_station"]
+        self.choose_end_station = kwargs["choose_end_station"]
+        self.period_start_station=kwargs["period_start_station"]
+        self.period_end_station=kwargs["period_end_station"]
+        self.condition = kwargs["condition"]
+        self.choose_index_train = kwargs["choose_index_train"]
+        self.train_start_time=kwargs["train_start_time"]
+        self.train_code_list=kwargs["train_code_list"]
+        self.reflex_table=kwargs["reflex_table"]
+        self.computer_width=kwargs["computer_screen_width"]
+        self.computer_high=kwargs["computer_screen_height"]
+        self.total_ticket_num=kwargs["total_ticket_num"]
         print(self.total_ticket_num)
         self.cookies = [{"name": "JSESSIONID", "value": "9A3A60B55A2ACC51B24B6742E68E6230"},
                         {"name": "RAIL_EXPIRATION", "value": "1582469373862"},
@@ -57,9 +59,8 @@ class get_ticket:
                          "value": "ERLN34ss4QuQiVGSBZaJz35V5mfm37V7QotSqYowrxa7ljZeEnI-RQjWRUTV8qjMdb5w8sps-WX286eIS9RF7Y_TOr4Cj6wSa_4UIfjh8GwzQPfWOV6nz8EIIIEfX-3ciBnc11jpF14E5BBpRzAqtiV8gdANBiKr"},
                         {"name": "BIGipServerpool_passport", "value": "267190794.50215.0000"},
                         {"name": "route", "value": "495c805987d0f5c8c84b14f60212447d"}]
-        print(train_code, choose_start_station, choose_end_station, period_start_station, period_end_station,
-              train_go_date, condition, choose_index_train, train_start_time, train_code_list, self.reflex_table)
-        self.open_browsers()
+        print(self.train_code, self.choose_start_station, self.choose_end_station, self.period_start_station, self.period_end_station,
+              self.train_go_date, self.condition, self.choose_index_train, self.train_start_time, self.train_code_list, self.reflex_table)
     def open_browsers(self):
         self.browsers_dir_copy_list=[]
         self.copy_browser_dir=os.path.join(
@@ -217,6 +218,7 @@ class get_ticket:
                 else:
                     tkinter.messagebox.showerror(title="调用错误", message="未找到可用的浏览器驱动")
             except:
+                self.inital_vars(self.kwargs)
                 continue
             break
         if self.count==len(self.choosed_driver_name_list):
