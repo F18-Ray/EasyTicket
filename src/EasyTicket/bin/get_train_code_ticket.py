@@ -443,7 +443,7 @@ class get_ticket:
         timeout_thread=threading.Thread(target=self.time_out_check, daemon=True)
         timeout_thread.start()
         while self.is_statement_exit!=True and self.is_over_time==False:
-            time.slee(0.5)
+            time.sleep(0.5)
             try:
                 self.sign_in_statement = self.driver.find_element(By.XPATH, self.sign_in_statement_xpath)
                 if self.sign_in_statement.is_displayed()==True:
