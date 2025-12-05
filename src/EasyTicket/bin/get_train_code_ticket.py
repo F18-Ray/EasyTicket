@@ -323,13 +323,13 @@ class get_ticket:
                 self.is_already_error=True
         else:
             tkinter.messagebox.showerror(
-                title="Get ticket error",
-                message="Can not get ticket correctly, please try share these bug in our github issues")
+                title="未知错误",
+                message="无法解决的问题，请在本项目的issues区发布issue")
             pass
         if self.is_already_error==True:
             tkinter.messagebox.showerror(
-                title="Get ticket error",
-                message="Can not get ticket correctly, please try share these bug in our github issues")
+                title="未知错误",
+                message="无法解决的问题，请在本项目的issues区发布issue")
         else:
             pass
     def sign_in(self):
