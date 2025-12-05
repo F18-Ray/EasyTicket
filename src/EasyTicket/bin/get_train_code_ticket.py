@@ -260,7 +260,7 @@ class get_ticket:
                         r"/html/body/div[2]/div[7]/div[13]/table/tbody/tr[{}]".format(ticket_range_index*2))
                     self.ticket_label_element=WebDriverWait(self.driver, 10).until(
                         EC.presence_of_element_located((By.XPATH, self.train_ticket_label_xpath)))
-                    self.ticket_label_html=self.ticket_label_element.get_attribute("outerHTML")                
+                    self.ticket_label_html=self.ticket_label_element.get_attribute("outerHTML")
                     for element_attribute in self.ticket_label_html.split(" "):
                         if element_attribute=='datatran="{}"'.format(self.train_code_list[self.train_code-1]):
                             self.train_code_index=-1
@@ -452,8 +452,11 @@ class get_ticket:
                 if self.next_page_statement.is_displayed()==True:
                     self.is_statement_exit=True
                 self.is_sign_in_success=self.driver.find_element(By.XPATH, self.sign_in_slide_mask_xpath)
-                if self.is_sign_in_success.is_displayed()==False:
-                    self.is_statement_exit=True
+                self.mask_html_code=self.is_sign_in_success.get_attribute("outerHTML")
+                self.maks_html_propties_list=self.mask_html_code.split(" ")
+                for per_property in self.maks_html_propties_list:
+                    if per_property=='none;"></div>':
+                        self.is_statement_exit=True
             except:
                 continue
         self.is_statement_exit=False
@@ -508,7 +511,7 @@ class get_ticket:
             time.sleep(1)
             self.time_count_total-=1
         self.is_over_time=True
-        print(self.is_over_time)
+        print(self.is_over_time, "exit the loop")
     def ensure_ticket_info(self):
         self.give_ticket_info_xpath=r"/html/body/div[1]/div[11]/div[5]/a[2]"
         self.ticket_sure_xpath=r"/html/body/div[5]/div/div[5]/div[1]/div/div[2]/div[2]/div[8]/a[2]"
