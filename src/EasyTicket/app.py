@@ -2,7 +2,7 @@ import tkinter
 from get_ticket_interface import Get_ticket_interface
 class main_loop:
     def __init__(self):
-        self.Main_loop=tkinter.mainloop()
+        tkinter.mainloop()
 class run_function:
     def __init__(self):
         self.run_get_ticket = Get_ticket_interface()

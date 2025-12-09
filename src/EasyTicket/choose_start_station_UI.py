@@ -43,11 +43,11 @@ class choose_start_station:
         for all_city_name in self.all_city_name:
             if self.get_text_res==all_city_name:
                 self.label=tkinter.Label(self.windows_choose_start_station, text="{}(城)".format(all_city_name))
-                self.pack=self.label.pack(pady=30)
+                self.label.pack(pady=30)
         for all_city_station_name in self.all_city_station_name:
             if self.get_text_res==all_city_station_name:
                 self.label = tkinter.Label(self.windows_choose_start_station, text="{}(站)".format(all_city_station_name))
-                self.pack = self.label.pack(pady=30)
+                self.label.pack(pady=30)
     def sure_button_operate(self):
         self.get_text_res = self.start_station_entery.get()
         if not os.path.exists(self.temp_dir):
@@ -58,12 +58,12 @@ class choose_start_station:
     def button_research_get_info(self):
         self.button_get_start_station = tkinter.Button(
             self.windows_choose_start_station, text="查询车站", width=8, height=1, font=("Arial", 8, "underline"))
-        self.button_get_start_place=self.button_get_start_station.pack(side=tkinter.TOP)
+        self.button_get_start_station.pack(side=tkinter.TOP)
         self.bind_func_research=self.button_get_start_station.bind("<Button-1>", lambda event: self.search_button_operate())
     def button_sure_get_info(self):
         self.button_get_start_station_sure = tkinter.Button(
             self.windows_choose_start_station, text="确认", width=8, height=1, font=("Arial", 8, "underline"))
-        self.button_get_start_place_sure=self.button_get_start_station_sure.pack(side=tkinter.BOTTOM)
+        self.button_get_start_station_sure.pack(side=tkinter.BOTTOM)
         self.bind_func_sure=self.button_get_start_station_sure.bind("<Button-1>", lambda event: self.sure_button_operate())
 
 
