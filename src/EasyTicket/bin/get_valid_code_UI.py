@@ -38,7 +38,7 @@ class get_valid_code:
             selectbackground="#FFFF00", selectforeground="#DC143C", font=("宋体", 15, "underline"),
             width=40, relief="solid", insertwidth=1)
         self.valid_code_entry.place(x=self.x_entry, y=self.y_entry)
-        self.button=self.button_get_sign_in_info()
+        self.button_get_sign_in_info()
         self.loading_valid_code="已经验证码发送给:{}".format(phone_number)
         self.loading_valid_code_text=tkinter.Label(self.windows_get_valid_code, text=self.loading_valid_code)
         self.loading_valid_code_text.place(x=self.x_entry, y=self.y_entry+40)
@@ -92,7 +92,7 @@ class get_valid_code:
     def button_get_sign_in_info(self):
         self.button_sign_in_sure = tkinter.Button(
             self.windows_get_valid_code, text="确认", width=8, height=1, font=("Arial", 8, "underline"))
-        self.button_get_start_time_sure_pack = self.button_sign_in_sure.pack(side=tkinter.BOTTOM)
+        self.button_sign_in_sure.pack(side=tkinter.BOTTOM)
         self.bind_func_sure = self.button_sign_in_sure.bind("<Button-1>", lambda event: self.get_data())
 
 # if __name__=="__main__":

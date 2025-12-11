@@ -44,7 +44,7 @@ class sign_in:
             selectbackground="#FFFF00", selectforeground="#DC143C", font=("宋体", 15, "underline"),
             width=40, relief="solid", insertwidth=1)
         self.ID_card_entry.place(x=self.x_entry, y=self.y_entry + 95)
-        self.button=self.button_get_sign_in_info()
+        self.button_get_sign_in_info()
     def get_data(self):
         self.contact_info=self.contact_info_entry.get()
         self.password=self.password_entry.get()
@@ -67,7 +67,7 @@ class sign_in:
     def button_get_sign_in_info(self):
         self.button_sign_in_sure = tkinter.Button(
             self.windows_sign_in, text="确认", width=8, height=1, font=("Arial", 8, "underline"))
-        self.button_get_start_time_sure_pack = self.button_sign_in_sure.pack(side=tkinter.BOTTOM)
+        self.button_sign_in_sure.pack(side=tkinter.BOTTOM)
         self.bind_func_sure = self.button_sign_in_sure.bind("<Button-1>", lambda event: self.get_data())
 
 
