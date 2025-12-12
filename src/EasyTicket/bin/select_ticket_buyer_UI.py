@@ -28,7 +28,7 @@ class buyer_selection:
             self.windows_buyer_position_str)
         self.buyer_name_text = tkinter.Label(self.windows_buyer, text="乘车人")
         self.buyer_name_text.place(x=self.x_entry, y=self.y_entry)
-        self.button=self.button_get_buyer_name_info()
+        self.button_get_buyer_name_info()
         self.add_buyer_input_field()
     def add_buyer_input_field(self):
         self.y_entry+=25
@@ -67,15 +67,15 @@ class buyer_selection:
     def button_get_buyer_name_info(self):
         self.button_buyer_sure = tkinter.Button(
             self.windows_buyer, text="确认", width=8, height=1, font=("Arial", 8, "underline"))
-        self.button_get_start_time_sure_pack = self.button_buyer_sure.pack(side=tkinter.BOTTOM)
+        self.button_buyer_sure.pack(side=tkinter.BOTTOM)
         self.bind_func_sure = self.button_buyer_sure.bind("<Button-1>", lambda event: self.get_data())
         self.button_add_buyer_input_field = tkinter.Button(
             self.windows_buyer, text="增加乘车人", width=10, height=1, font=("Arial", 8, "underline"))
-        self.button_add_buyer_pack=self.button_add_buyer_input_field.place(x=0, y=self.windows_choose_buyer_height, anchor="sw")
+        self.button_add_buyer_input_field.place(x=0, y=self.windows_choose_buyer_height, anchor="sw")
         self.bind_func_buyer = self.button_add_buyer_input_field.bind("<Button-1>", lambda event: self.add_buyer_input_field())
         self.button_delete_buyer_input_field=tkinter.Button(
             self.windows_buyer, text="减少乘车人", width=10, height=1, font=("Arial", 8, "underline"))
-        self.button_delete_buyer_pack=self.button_delete_buyer_input_field.place(
+        self.button_delete_buyer_input_field.place(
             x=self.windows_choose_buyer_width, y=self.windows_choose_buyer_height, anchor="se")
         self.bind_func_delete_buyer=self.button_delete_buyer_input_field.bind(
             "<Button-1>", lambda event: self.delete_buyer_input_field())

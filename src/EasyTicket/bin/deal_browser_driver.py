@@ -67,8 +67,7 @@ class check_browsers_drivers_error:
                 self.x = (
                     int((self.deal_error_window_width + 60)/4))
                 self.y = self.deal_error_window_height-30
-                self.butoon_version_same_place = (
-                    self.button_version_same.place(x=self.x, y=self.y, anchor="ne"))
+                self.button_version_same.place(x=self.x, y=self.y, anchor="ne")
                 self.run_version_same = self.button_version_same.bind(
                     "<Button-1>", lambda event: self.version_same_func(
                         self.browser_dirname, self.browser_copy_dir))
@@ -78,8 +77,7 @@ class check_browsers_drivers_error:
                 self.x = (
                     int((self.deal_error_window_width + 60)/4*3))
                 self.y = self.deal_error_window_height-30
-                self.butoon_version_unsame_place = (
-                    self.button_version_unsame.place(x=self.x, y=self.y, anchor="ne"))
+                self.button_version_unsame.place(x=self.x, y=self.y, anchor="ne")
                 self.run_version_unsame = self.button_version_unsame.bind(
                     "<Button-1>", lambda event: self.version_unsame_func(self.driver_executable_dir))
                 while True:

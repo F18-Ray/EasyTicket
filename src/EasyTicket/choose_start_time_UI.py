@@ -11,7 +11,7 @@ class choose_start_time:
         self.windows_width=self.windows_choose_start_time.winfo_width()
         self.date_local = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         self.date_local_label = tkinter.Label(self.windows_choose_start_time, text="现在是:{}".format(self.date_local))
-        self.data_local_date_pack=self.date_local_label.place(x=self.windows_width/2, y=self.y_entry+90)
+        self.date_local_label.place(x=self.windows_width/2, y=self.y_entry+90)
         # self.windows_choose_start_time_icon = self.windows_choose_start_time.iconbitmap(
         #     r"./ticket_12306_prog_addition/download_photo.ico")
         self.title_1 = self.windows_choose_start_time.title("请选择日期和时间")
@@ -46,7 +46,7 @@ class choose_start_time:
             selectbackground="#FFFF00", selectforeground="#DC143C", font=("宋体", 15, "underline"),
             width=40, relief="solid", insertwidth=1)
         self.start_time_entery_day.place(x=self.x_entry, y=self.y_entry+60)
-        self.button=self.button_get_start_time()
+        self.button_get_start_time()
     def get_data(self):
         self.years=self.start_time_entery_year.get()
         self.months=self.start_time_entery_month.get()
@@ -67,7 +67,7 @@ class choose_start_time:
     def button_get_start_time(self):
         self.button_get_start_time_sure = tkinter.Button(
             self.windows_choose_start_time, text="确认", width=8, height=1, font=("Arial", 8, "underline"))
-        self.button_get_start_time_sure_pack = self.button_get_start_time_sure.pack(side=tkinter.BOTTOM)
+        self.button_get_start_time_sure.pack(side=tkinter.BOTTOM)
         self.bind_func_sure = self.button_get_start_time_sure.bind("<Button-1>", lambda event: self.get_data())
 
 

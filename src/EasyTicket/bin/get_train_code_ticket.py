@@ -181,7 +181,7 @@ class get_ticket:
                     self.options.binary_location = self.browsers_dir_list[index]
                     self.web_driver=Service(executable_path=self.driver_dir)
                     self.driver = webdriver.Firefox(service=self.web_driver, options=self.options)
-                    self.contant=self.driver.get(self.init_url)
+                    self.driver.get(self.init_url)
                     for cookies in self.cookies:
                         self.driver.add_cookie(cookies)
                     self.web_get_ticket()
@@ -195,7 +195,7 @@ class get_ticket:
                     self.options.binary_location = self.browsers_dir_list[index]
                     self.web_driver = Service(executable_path=self.driver_dir)
                     self.driver=webdriver.Edge(service=self.web_driver, options=self.options)
-                    self.contant=self.driver.get(self.init_url)
+                    self.driver.get(self.init_url)
                     for cookies in self.cookies:
                         self.driver.add_cookie(cookies)
                     self.web_get_ticket()
@@ -211,7 +211,7 @@ class get_ticket:
                     self.options.binary_location = self.browsers_dir_list[index]
                     self.web_driver = Service(executable_path=self.driver_dir)
                     self.driver=webdriver.Chrome(service=self.web_driver, options=self.options)
-                    self.contant=self.driver.get(self.init_url)
+                    self.driver.get(self.init_url)
                     for cookies in self.cookies:
                         self.driver.add_cookie(cookies)
                     self.web_get_ticket()

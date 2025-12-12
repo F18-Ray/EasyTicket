@@ -77,7 +77,7 @@ class train_ticket_choose_UI:
         self.x_entry_start = 0
         self.y_entry_start = self.text_height + 3
         self.entery_start.place(x=self.x_entry_start, y=self.y_entry_start)
-        self.button_sure=self.button_sure_ticket()
+        self.button_sure_ticket()
     def info_UI(self):
         for train_ticket_info in self.train_info_dict:
             self.train_index+=1
@@ -148,7 +148,7 @@ class train_ticket_choose_UI:
                     "computer_screen_width":self.main_window_width, 
                     "total_ticket_num":len(self.train_info_dict)},
             name="thread10", daemon=True)
-        self.ticket_choose_train_thread_start = self.ticket_choose_train_thread.start()
+        self.ticket_choose_train_thread.start()
     def get_enter_contant(self):
         self.count=0
         self.count_1=0
@@ -216,7 +216,7 @@ class train_ticket_choose_UI:
         self.button_get_train_code_height = self.button_get_train_code.winfo_height()
         self.x = int(self.interface_width - self.button_get_train_code_width)-15
         self.y = self.text_height+3
-        self.butoon_get_train_code_place = self.button_get_train_code.place(x=self.x, y=self.y, anchor="ne")
+        self.button_get_train_code.place(x=self.x, y=self.y, anchor="ne")
         self.get_train_code = self.button_get_train_code.bind(
             "<Button-1>", lambda event: self.get_enter_contant())
 
