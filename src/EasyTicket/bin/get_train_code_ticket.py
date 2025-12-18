@@ -138,6 +138,9 @@ class get_ticket:
                                     title="不兼容",
                                     message="本项目不支持操作系统中现有的浏览器")
                     elif self.system_type=="darwin":
+                        tkinter.messagebox.showinfo(
+                            title="提示",
+                            message="本项目没有自带该系统的驱动程序，请手动下载并通过接下来的提示手动添加驱动程序")
                         if (self.choosed_driver_name=="firefox" or self.choosed_driver_name=="firefox-developer" or
                             self.choosed_driver_name=="firefox-nightly"):
                             self.choosed_driver_name = "geckodriver"
@@ -226,7 +229,7 @@ class get_ticket:
             self.record_result_file_dir=os.path.join(
                 self.temp_dir, self.result_record_file_name)
             self.deal_result=None
-            tkinter.messagebox.showerror(title="Error", message="无法使用任何浏览器，请确保您的系统浏览器或浏览器驱动已升级到最新。")
+            tkinter.messagebox.showerror(title="错误", message="无法使用任何浏览器，请确保您的系统浏览器或浏览器驱动已升级到最新。")
             deal_func_init=deal_browser_driver.check_browsers_drivers_error(
                 self.browsers_dir_copy_list, self.choosed_driver_name_list, 
                 self.computer_width, self.computer_high, self.temp_dir)
@@ -236,9 +239,9 @@ class get_ticket:
                     break
             if os.path.exists(self.record_result_file_dir)==True:
                 with open(self.record_result_file_dir, "r", encoding="utf-8") as deal_result_read:
-                    self.deal_result=bool(deal_result_read.read())
+                    self.deal_result=deal_result_read.read()
                 os.remove(self.record_result_file_dir)
-                if self.deal_result==True:
+                if self.deal_result=="True":
                     self.open_browsers()
                 else:
                     tkinter.messagebox.showerror(title="未能解决", message="无法解决问题, 请阅读readme或发布issue")

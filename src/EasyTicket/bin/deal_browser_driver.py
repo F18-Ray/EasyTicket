@@ -45,10 +45,13 @@ class check_browsers_drivers_error:
                         self.driver_executable_dir, self.driver_executable_name)
                 self.browser_executable_path=self.browsers_dir_list[each_browser_index]
                 self.browser_dirname=os.path.dirname(self.browser_executable_path)
-                self.driver_version=self.check_version(
-                    self.driver_executable_path)
-                self.browser_version=self.check_version(
-                    self.browser_executable_path)
+                try:
+                    self.driver_version=self.check_version(
+                        self.driver_executable_path)
+                    self.browser_version=self.check_version(
+                        self.browser_executable_path)
+                except:
+                    tkinter.messagebox.showerror("错误", "缺失浏览器或驱动程序")
                 self.showinfo=(
                     "驱动器版本: {}\n\n浏览器版本: {}\n\n请确认驱动器版本与浏览器版本是否相匹配".format(
                         self.driver_version, self.browser_version))
@@ -108,9 +111,7 @@ class check_browsers_drivers_error:
             return False
         except FileNotFoundError:
             print(f"未找到可执行文件: {executable_path}")
-            self.error_deal_result=False
-            self.show_info_UI.destroy()
-            return False
+            pass
     def version_same_func(self, src_dir, dst_dir):
         self.show_info_UI.destroy()
         if not os.path.exists(src_dir):
