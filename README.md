@@ -20,7 +20,6 @@
 或通过MakeFile的形式安装项目，或直接通过运行src/run.py（不推荐）。
 但是MakeFile的安装方式在本作者写该readme的时候还没有做出来，将在下一版中推出。
 ### 1, 通过pip安装：
-&emsp; (* 注：当前pip仍然为测试版)
 ```sh
 pip install EasyTicket
 ```
