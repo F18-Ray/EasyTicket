@@ -7,9 +7,10 @@ import tkinter.messagebox
 from selenium import webdriver
 from .sign_in_UI import sign_in
 from . import browsers_searcher
+from . import deal_browser_driver
+from . import get_new_browser_driver_UI
 from . select_ticket_buyer_UI import buyer_selection
 from .get_valid_code_UI import get_valid_code
-from . import deal_browser_driver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -62,6 +63,12 @@ class get_ticket:
         print(self.train_code, self.choose_start_station, self.choose_end_station, self.period_start_station, self.period_end_station,
               self.train_go_date, self.condition, self.choose_index_train, self.train_start_time, self.train_code_list, self.reflex_table)
     def open_browsers(self):
+        self.add_uknown_browser_driver_log=os.path.join(
+                self.temp_dir, "data_socket_unknown_browser_driver_info.log")
+        try:
+            os.remove(self.add_uknown_browser_driver_log)
+        except:
+            pass
         self.browsers_dir_copy_list=[]
         self.copy_browser_dir=os.path.join(
                     os.path.dirname(os.path.abspath(__file__)), 
@@ -86,6 +93,14 @@ class get_ticket:
                     self.choosed_driver=inborn_driver
                     self.browser_dir=host_browser["path"]
                     self.browsers_dir_copy_list.append(self.browser_dir)
+                    if os.path.exists(self.add_uknown_browser_driver_log)==True:
+                        with open(
+                            self.add_uknown_browser_driver_log, 
+                            "r", 
+                            encoding="utf-8") as uknown_browser_driver_info:
+                            self.new_browser_driver_info=ast.literal_eval(
+                                uknown_browser_driver_info.read())
+                        self.choosed_driver=self.new_browser_driver_info[0]["browser_type"]
                     if os.path.exists(self.copy_browser_dir)==True:
                         self.browser_dir=os.path.join(self.copy_browser_dir, os.path.basename(self.browser_dir))
                     self.browsers_dir_list.append(self.browser_dir)
@@ -114,6 +129,11 @@ class get_ticket:
                                 tkinter.messagebox.showerror(
                                     title="不兼容",
                                     message="本项目不支持操作系统中现有的浏览器")
+                                get_new_browser_driver_UI.AddUnknownBrowserDriverWindow(self.temp_dir)
+                                while True:
+                                    if os.path.exists(self.add_uknown_browser_driver_log)==True:
+                                        break
+                                self.open_browsers()
                     elif self.system_type=="linux" or self.system_type=="Linux":
                         if self.choosed_driver=="firefox" or self.choosed_driver=="waterfox":
                             self.choosed_driver_name="geckodriver"
@@ -137,6 +157,11 @@ class get_ticket:
                                 tkinter.messagebox.showerror(
                                     title="不兼容",
                                     message="本项目不支持操作系统中现有的浏览器")
+                                get_new_browser_driver_UI.AddUnknownBrowserDriverWindow(self.temp_dir)
+                                while True:
+                                    if os.path.exists(self.add_uknown_browser_driver_log)==True:
+                                        break
+                                self.open_browsers()
                     elif self.system_type=="darwin":
                         tkinter.messagebox.showinfo(
                             title="提示",
@@ -166,10 +191,16 @@ class get_ticket:
                                 tkinter.messagebox.showerror(
                                     title="不兼容",
                                     message="本项目不支持操作系统中现有的浏览器")
+                                get_new_browser_driver_UI.AddUnknownBrowserDriverWindow(self.temp_dir)
+                                while True:
+                                    if os.path.exists(self.add_uknown_browser_driver_log)==True:
+                                        break
+                                self.open_browsers()
                     else:
                         tkinter.messagebox.showerror(
                             title="不兼容",
                             message="如果您正在使用源码运行该项目，说明该源码暂时不兼容您的操作系统，请阅读readme文件并安装本项目以更好的兼容。如问题仍未解决，请发布issue")
+                        # Add the function of add the unknow system type.
         print(self.choosed_driver_type_list, "...", self.choosed_driver_name_list, "...", self.choosed_browsers_dir_list, "...", self.browsers_dir_list)
         for index in range(len(self.choosed_driver_name_list)):
             self.driver_dir = os.path.join(self.abs_dir, "driver", self.choosed_driver_name_list[index])
@@ -220,6 +251,11 @@ class get_ticket:
                     self.web_get_ticket()
                 else:
                     tkinter.messagebox.showerror(title="调用错误", message="未找到可用的浏览器驱动")
+                    get_new_browser_driver_UI.AddUnknownBrowserDriverWindow(self.temp_dir)
+                    while True:
+                        if os.path.exists(self.add_uknown_browser_driver_log)==True:
+                            break
+                    self.open_browsers()
             except:
                 self.inital_vars(self.kwargs)
                 continue
