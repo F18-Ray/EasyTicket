@@ -8,12 +8,13 @@ from pathlib import Path
 from tkinter import messagebox, filedialog
 class AddUnknownBrowserDriverWindow:
     def __init__(self, temp_dir):
-        self.temp_dir=temp_dir
+        self.temp_dir = temp_dir
         self.window = tk.Toplevel()
         self.window.title("添加未知的驱动和浏览器类型")
-        self.window.geometry("600x400")
+        self.window.geometry("600x500")
         self.window.resizable(True, True)
         self.browser_type_var = tk.StringVar()
+        self.browser_path_var = tk.StringVar()
         self.driver_path_var = tk.StringVar()
         self.supported_browsers = [
             'chrome', 'firefox', 'edge', 'safari', 'opera',
@@ -26,7 +27,7 @@ class AddUnknownBrowserDriverWindow:
         main_frame = tk.Frame(self.window, padx=20, pady=20)
         main_frame.pack(fill=tk.BOTH, expand=True)
         browser_frame = tk.Frame(main_frame)
-        browser_frame.pack(fill=tk.X, pady=(0, 20))
+        browser_frame.pack(fill=tk.X, pady=(0, 15))
         browser_label = tk.Label(
             browser_frame,
             text="添加未知的浏览器类型(具体请参阅selenium官方文档的支持浏览器类型)",
@@ -42,8 +43,31 @@ class AddUnknownBrowserDriverWindow:
             width=50
         )
         self.browser_entry.pack(fill=tk.X, ipady=5)
+        browser_path_frame = tk.Frame(main_frame)
+        browser_path_frame.pack(fill=tk.X, pady=(0, 15))
+        browser_path_label = tk.Label(
+            browser_path_frame,
+            text="输入浏览器路径",
+            font=('Arial', 10, 'bold')
+        )
+        browser_path_label.pack(anchor=tk.W, pady=(0, 5))
+        browser_path_input_frame = tk.Frame(browser_path_frame)
+        browser_path_input_frame.pack(fill=tk.X)
+        self.browser_path_entry = tk.Entry(
+            browser_path_input_frame,
+            textvariable=self.browser_path_var,
+            font=('Arial', 11)
+        )
+        self.browser_path_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, ipady=5)
+        browser_path_browse_button = tk.Button(
+            browser_path_input_frame,
+            text="浏览...",
+            command=self.browse_browser_path,
+            font=('Arial', 10)
+        )
+        browser_path_browse_button.pack(side=tk.RIGHT, padx=(10, 0))
         driver_frame = tk.Frame(main_frame)
-        driver_frame.pack(fill=tk.X, pady=(0, 20))
+        driver_frame.pack(fill=tk.X, pady=(0, 15))
         driver_label = tk.Label(
             driver_frame,
             text="添加未知的浏览器对应驱动",
@@ -98,8 +122,19 @@ class AddUnknownBrowserDriverWindow:
         )
         if file_path:
             self.driver_path_var.set(file_path)
+    def browse_browser_path(self):
+        file_path = filedialog.askopenfilename(
+            title="选择浏览器可执行文件",
+            filetypes=[
+                ("可执行文件", "*.exe"),
+                ("应用程序", "*.app"),
+                ("所有文件", "*.*")
+            ]
+        )
+        if file_path:
+            self.browser_path_var.set(file_path)
     def open_selenium_docs(self):
-        url="https://www.selenium.dev/documentation/webdriver/browsers/"
+        url = "https://www.selenium.dev/documentation/webdriver/browsers/"
         messagebox.showinfo(
             "Selenium文档",
             "请访问: https://www.selenium.dev/documentation/webdriver/browsers/\n"
@@ -117,6 +152,18 @@ class AddUnknownBrowserDriverWindow:
         if browser_type in self.supported_browsers:
             return True, f"注意：'{browser_type}'已经是Selenium官方支持的浏览器类型"
         return True, "浏览器类型验证通过"
+    def validate_browser_path(self, browser_path):
+        if not browser_path or not browser_path.strip():
+            return False, "浏览器路径不能为空"
+        browser_path = browser_path.strip()
+        if not os.path.exists(browser_path):
+            return False, "指定的浏览器路径不存在"
+        if os.path.isfile(browser_path):
+            _, ext = os.path.splitext(browser_path)
+            allowed_extensions = ['.exe', '.app', '.bin', '']
+            if ext.lower() not in allowed_extensions:
+                return False, "浏览器路径应为可执行文件"
+        return True, "浏览器路径验证通过"
     def validate_driver_path(self, driver_path):
         if not driver_path or not driver_path.strip():
             return False, "驱动路径不能为空"
@@ -149,12 +196,12 @@ class AddUnknownBrowserDriverWindow:
         except Exception as e:
             messagebox.showerror("复制错误", f"复制文件时出错: {str(e)}")
             return None
-    def save_to_log(self, browser_type, original_driver_path):
+    def save_to_log(self, browser_type, browser_path, original_driver_path):
         try:
-            log_file = os.path.join(
-                self.temp_dir, "data_socket_unknown_browser_driver_info.log")
+            log_file = Path(self.temp_dir) / "data_socket_unknown_browser_driver_info.log"
             data = {
                 "browser_type": browser_type.strip(),
+                "browser_path": browser_path.strip() if browser_path else "",
                 "driver_path": original_driver_path,
             }
             if log_file.exists():
@@ -176,11 +223,17 @@ class AddUnknownBrowserDriverWindow:
             return False
     def on_confirm(self):
         browser_type = self.browser_type_var.get()
+        browser_path = self.browser_path_var.get()
         driver_path = self.driver_path_var.get()
         is_valid_browser, browser_msg = self.validate_browser_type(browser_type)
         if not is_valid_browser:
             messagebox.showerror("验证失败", browser_msg)
             self.browser_entry.focus_set()
+            return
+        is_valid_browser_path, browser_path_msg = self.validate_browser_path(browser_path)
+        if not is_valid_browser_path:
+            messagebox.showerror("验证失败", browser_path_msg)
+            self.browser_path_entry.focus_set()
             return
         is_valid_driver, driver_msg = self.validate_driver_path(driver_path)
         if not is_valid_driver:
@@ -194,7 +247,7 @@ class AddUnknownBrowserDriverWindow:
         copied_path = self.copy_driver_file(driver_path)
         if not copied_path:
             return
-        if self.save_to_log(browser_type, driver_path):
+        if self.save_to_log(browser_type, browser_path, driver_path):
             messagebox.showinfo(
                 "成功",
                 f"浏览器类型 '{browser_type}' 和驱动已成功添加！\n"
@@ -203,5 +256,4 @@ class AddUnknownBrowserDriverWindow:
             self.window.destroy()
         else:
             messagebox.showerror("错误", "保存信息失败")
-
 

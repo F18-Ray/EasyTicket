@@ -86,6 +86,19 @@ class get_ticket:
         self.choosed_driver=None
         self.choosed_driver_name=None
         self.browser_dir=None
+        if len(self.browser_dir)==0:
+            get_new_browser_driver_UI.AddUnknownBrowserDriverWindow(self.temp_dir)
+            while True:
+                if os.path.exists(self.add_uknown_browser_driver_log)==True:
+                    break
+        if os.path.exists(self.add_uknown_browser_driver_log)==True:
+            with open(
+                self.add_uknown_browser_driver_log, 
+                "r", 
+                encoding="utf-8") as uknown_browser_driver_info:
+                self.new_browser_driver_info=ast.literal_eval(
+                    uknown_browser_driver_info.read())
+            # self.browser_list.append()
         for inborn_driver in self.inborn_driver_list:
             self.count_compare_time=0
             for host_browser in self.browsers_list:
@@ -93,14 +106,6 @@ class get_ticket:
                     self.choosed_driver=inborn_driver
                     self.browser_dir=host_browser["path"]
                     self.browsers_dir_copy_list.append(self.browser_dir)
-                    if os.path.exists(self.add_uknown_browser_driver_log)==True:
-                        with open(
-                            self.add_uknown_browser_driver_log, 
-                            "r", 
-                            encoding="utf-8") as uknown_browser_driver_info:
-                            self.new_browser_driver_info=ast.literal_eval(
-                                uknown_browser_driver_info.read())
-                        self.choosed_driver=self.new_browser_driver_info[0]["browser_type"]
                     if os.path.exists(self.copy_browser_dir)==True:
                         self.browser_dir=os.path.join(self.copy_browser_dir, os.path.basename(self.browser_dir))
                     self.browsers_dir_list.append(self.browser_dir)
@@ -200,7 +205,11 @@ class get_ticket:
                         tkinter.messagebox.showerror(
                             title="不兼容",
                             message="如果您正在使用源码运行该项目，说明该源码暂时不兼容您的操作系统，请阅读readme文件并安装本项目以更好的兼容。如问题仍未解决，请发布issue")
-                        # Add the function of add the unknow system type.
+                        get_new_browser_driver_UI.AddUnknownBrowserDriverWindow(self.temp_dir)
+                        while True:
+                            if os.path.exists(self.add_uknown_browser_driver_log)==True:
+                                break
+                        self.open_browsers()
         print(self.choosed_driver_type_list, "...", self.choosed_driver_name_list, "...", self.choosed_browsers_dir_list, "...", self.browsers_dir_list)
         for index in range(len(self.choosed_driver_name_list)):
             self.driver_dir = os.path.join(self.abs_dir, "driver", self.choosed_driver_name_list[index])
