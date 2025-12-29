@@ -65,10 +65,7 @@ class get_ticket:
     def open_browsers(self):
         self.add_uknown_browser_driver_log=os.path.join(
                 self.temp_dir, "data_socket_unknown_browser_driver_info.log")
-        try:
-            os.remove(self.add_uknown_browser_driver_log)
-        except:
-            pass
+        self.new_browser_driver_info=None
         self.browsers_dir_copy_list=[]
         self.copy_browser_dir=os.path.join(
                     os.path.dirname(os.path.abspath(__file__)), 
@@ -91,14 +88,22 @@ class get_ticket:
             while True:
                 if os.path.exists(self.add_uknown_browser_driver_log)==True:
                     break
-        if os.path.exists(self.add_uknown_browser_driver_log)==True:
+        def deal_add_new_log():
             with open(
                 self.add_uknown_browser_driver_log, 
                 "r", 
                 encoding="utf-8") as uknown_browser_driver_info:
                 self.new_browser_driver_info=ast.literal_eval(
                     uknown_browser_driver_info.read())
-            # self.browser_list.append()
+            try:
+                os.remove(self.add_uknown_browser_driver_log)
+            except:
+                return False
+        if os.path.exists(self.add_uknown_browser_driver_log)==True:
+            deal_add_new_log()
+            self.browser_list.append(
+                {"browser_type": self.new_browser_driver_info[0]["browser_type"], 
+                 "path": self.new_browser_driver_info[0]["browser_path"]})
         for inborn_driver in self.inborn_driver_list:
             self.count_compare_time=0
             for host_browser in self.browsers_list:
@@ -138,7 +143,8 @@ class get_ticket:
                                 while True:
                                     if os.path.exists(self.add_uknown_browser_driver_log)==True:
                                         break
-                                self.open_browsers()
+                                deal_add_new_log()
+                                # undone
                     elif self.system_type=="linux" or self.system_type=="Linux":
                         if self.choosed_driver=="firefox" or self.choosed_driver=="waterfox":
                             self.choosed_driver_name="geckodriver"
