@@ -9,8 +9,8 @@
 用爬虫和selenium等自动化技术调用系统浏览器实现。
 
 ## 支持列表
-* 操作系统：Windows | Linux | MacOS (推荐使用Windows和Linux)
-* 浏览器：MicroSoft Edge (系列) | Google Chrome (系列) | FireFox (系列)  (推荐使用Firefox或edge)  
+* 操作系统：Windows | Linux | MacOS | 其他(非官方支持) (推荐使用Windows和Linux)
+* 浏览器：MicroSoft Edge (系列) | Google Chrome (系列) | FireFox (系列) | 其他(具体请参阅[selenium官方文档](https://www.selenium.dev/documentation/webdriver/browsers/))   (推荐使用Firefox或edge)  
 (* 注：在使用该项目前请确保你的系统浏览器已经升级到最新，
 但是如果你不愿意升级你的浏览器，可以选择更改项目中的驱动版本，
 并确保和你的系统浏览器版本相匹即可。)

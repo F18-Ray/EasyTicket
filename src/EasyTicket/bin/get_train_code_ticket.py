@@ -269,7 +269,19 @@ class get_ticket:
                     for cookies in self.cookies:
                         self.driver.add_cookie(cookies)
                     self.web_get_ticket()
-                # undone
+                elif (self.choosed_driver_type_list[index]=="safari"):
+                    self.count+=1
+                    from selenium.webdriver.safari.options import Options
+                    from selenium.webdriver.safari.service import Service
+                    self.options = Options()
+                    # self.options.add_argument('--headless')
+                    self.options.binary_location = self.browsers_dir_list[index]
+                    self.web_driver = Service(executable_path=self.driver_dir)
+                    self.driver=webdriver.Safari(service=self.web_driver, options=self.options)
+                    self.driver.get(self.init_url)
+                    for cookies in self.cookies:
+                        self.driver.add_cookie(cookies)
+                    self.web_get_ticket()
                 else:
                     tkinter.messagebox.showerror(title="调用错误", 
                                                  message="未找到可用的浏览器驱动，请检查输入的浏览器类型是否正确")
