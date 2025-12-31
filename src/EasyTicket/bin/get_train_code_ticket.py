@@ -84,7 +84,7 @@ class get_ticket:
         self.choosed_driver_name=None
         self.browser_dir=None
         self.is_already_add_new_browser_driver=False
-        if len(self.browser_dir)==0:
+        if len(self.browsers_list)==0:
             get_new_browser_driver_UI.AddUnknownBrowserDriverWindow(self.temp_dir)
             while True:
                 if os.path.exists(self.add_uknown_browser_driver_log)==True:
@@ -116,7 +116,7 @@ class get_ticket:
             self.is_already_add_new_browser_driver=True
         if os.path.exists(self.add_uknown_browser_driver_log)==True:
             deal_add_new_log()
-            self.browser_list.append(
+            self.browsers_list.append(
                 {"browser_type": self.new_browser_driver_info[
                     len(self.new_browser_driver_info)-1]["browser_type"], 
                  "path": self.new_browser_driver_info[
