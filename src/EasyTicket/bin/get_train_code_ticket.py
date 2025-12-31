@@ -534,9 +534,10 @@ class get_ticket:
             args=(self.computer_width, self.computer_high, self.file_dir_name),
             daemon=True)
         self.passenger_name_UI_thread.start()
-        while self.is_exist!=True:
+        while True:
             if os.path.exists(self.passengers_name_file)==True:
                 self.is_exist=True
+                break
         self.is_exist=False
         with open(self.passengers_name_file, "r", encoding="utf-8") as passengers_name_file:
             self.passengers_name_read=passengers_name_file.read()
