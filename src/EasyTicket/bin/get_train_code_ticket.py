@@ -430,9 +430,10 @@ class get_ticket:
         if not os.path.exists(self.sign_in_socket_file):
             tkinter.messagebox.showerror(title="登录", message="请先登录")
             sign_in(self.computer_width, self.computer_high, self.file_dir_name)
-        while self.is_exist!=True:
+        while True:
             if os.path.exists(self.sign_in_socket_file)==True:
                 self.is_exist=True
+                break
         self.is_exist=False
         with open(self.sign_in_socket_file, "r", encoding="utf-8") as sign_in_info:
             self.sign_in_info=sign_in_info.read()
@@ -458,10 +459,11 @@ class get_ticket:
         self.get_valid_code_button=WebDriverWait(self.driver, timeout=20).until(
             EC.element_to_be_clickable((By.XPATH, self.get_valid_code_xpath)))
         self.get_valid_code_button.click()
-        while self.is_statement_exit!=True:
+        while True:
             try:
                 if self.driver.find_element(By.XPATH, self.sign_in_statement_xpath).is_displayed()==True:
                     self.is_statement_exit=True
+                    break
                 if self.driver.find_element(By.XPATH, self.sure_valid_code_button_xpath).is_displayed() == False:
                     self.is_statement_exit = True
                     break
@@ -484,9 +486,10 @@ class get_ticket:
             args=(self.computer_width, self.computer_high, self.file_dir_name, self.sign_in_info[0]),
             daemon=True)
         self.get_valid_code_thread.start()
-        while self.is_exist!=True:
+        while True: # Why this fucking code always can't work in the expression
             if os.path.exists(self.valid_code_socket_file)==True:
                 self.is_exist=True
+                break
             if os.path.exists(self.valid_code_resend_file)==True:
                 self.get_valid_code_button = WebDriverWait(self.driver, timeout=20).until(
                     EC.element_to_be_clickable((By.XPATH, self.get_valid_code_xpath)))
@@ -511,21 +514,24 @@ class get_ticket:
             pass
         timeout_thread=threading.Thread(target=self.time_out_check, daemon=True)
         timeout_thread.start()
-        while self.is_statement_exit!=True and self.is_over_time==False:
+        while self.is_statement_exit!=True and self.is_over_time==False: # Who knows why the fucking code is always buggy
             time.sleep(0.5)
             try:
                 self.sign_in_statement = self.driver.find_element(By.XPATH, self.sign_in_statement_xpath)
                 if self.sign_in_statement.is_displayed()==True:
                     self.is_statement_exit = True
+                    break
                 self.next_page_statement=self.driver.find_element(By.XPATH, self.next_page_xpath)
                 if self.next_page_statement.is_displayed()==True:
                     self.is_statement_exit=True
+                    break
                 self.is_sign_in_success=self.driver.find_element(By.XPATH, self.sign_in_slide_mask_xpath)
                 self.mask_html_code=self.is_sign_in_success.get_attribute("outerHTML")
                 self.maks_html_propties_list=self.mask_html_code.split(" ")
                 for per_property in self.maks_html_propties_list:
-                    if per_property=='none;"></div>':
+                    if per_property=='none;"></div>': # bug
                         self.is_statement_exit=True
+                        break
             except:
                 continue
         self.is_statement_exit=False
@@ -594,9 +600,10 @@ class get_ticket:
             args=(self.computer_width, self.computer_high, self.file_dir_name),
             daemon=True)
         self.passenger_name_UI_thread.start()
-        while self.is_exist!=True:
+        while True:
             if os.path.exists(self.passengers_name_file)==True:
                 self.is_exist=True
+                break
         self.is_exist=False
         with open(self.passengers_name_file, "r", encoding="utf-8") as passengers_name_file:
             self.passengers_name_read=passengers_name_file.read()
@@ -633,10 +640,11 @@ class get_ticket:
         self.sure_ticket_button = WebDriverWait(self.driver, timeout=20).until(
             EC.element_to_be_clickable((By.XPATH, self.ticket_sure_xpath)))
         self.sure_ticket_button.click()
-        while self.is_statement_exit!=True:
+        while True:
             try:
                 if self.driver.find_element(By.XPATH, self.ticket_get_succeess_xpath).is_displayed()==True:
                     self.is_statement_exit=True
+                    break
             except:
                 pass
         self.is_statement_exit=False
